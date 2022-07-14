@@ -49,7 +49,10 @@ makeSuiteCleanRoom('Free Collect Module', function () {
             profileId: FIRST_PROFILE_ID,
             contentURI: MOCK_URI,
             collectModule: freeCollectAndTagModule.address,
-            collectModuleInitData: initData,
+            collectModuleInitData: abiCoder.encode(
+              ['bool', 'string[]'],
+              [true, ['#love', '#hate']]
+            ),
             referenceModule: ZERO_ADDRESS,
             referenceModuleInitData: [],
           })

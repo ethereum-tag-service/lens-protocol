@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.10;
 
-import {IETSTargetTagger} from '../../../../../ets/packages/contracts-core/interfaces/IETSTargetTagger.sol';
+import {IETSTargetTagger} from '../../../../node_modules/ets/packages/contracts-core/contracts/interfaces/IETSTargetTagger.sol';
 import {ICollectModule} from '../../../interfaces/ICollectModule.sol';
 import {ModuleBase} from '../ModuleBase.sol';
 import {FollowValidationModuleBase} from '../FollowValidationModuleBase.sol';
