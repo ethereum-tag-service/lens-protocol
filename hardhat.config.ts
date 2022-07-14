@@ -25,7 +25,8 @@ if (!process.env.SKIP_LOAD) {
 
 const DEFAULT_BLOCK_GAS_LIMIT = 12450000;
 const MNEMONIC_PATH = "m/44'/60'/0'/0";
-const MNEMONIC = process.env.MNEMONIC || '';
+const mnemonic: string | undefined = process.env.MNEMONIC;
+//const MNEMONIC = process.env.MNEMONIC || '';
 const MAINNET_FORK = process.env.MAINNET_FORK === 'true';
 const TRACK_GAS = process.env.TRACK_GAS === 'true';
 const BLOCK_EXPLORER_KEY = process.env.BLOCK_EXPLORER_KEY || '';
@@ -33,7 +34,7 @@ const BLOCK_EXPLORER_KEY = process.env.BLOCK_EXPLORER_KEY || '';
 const getCommonNetworkConfig = (networkName: eNetwork, networkId: number) => ({
   url: NETWORKS_RPC_URL[networkName] ?? '',
   accounts: {
-    mnemonic: MNEMONIC,
+    mnemonic: mnemonic,
     path: MNEMONIC_PATH,
     initialIndex: 0,
     count: 20,
@@ -80,10 +81,11 @@ const config: HardhatUserConfig = {
       chainId: HARDHATEVM_CHAINID,
       throwOnTransactionFailures: true,
       throwOnCallFailures: true,
-      accounts: accounts.map(({ secretKey, balance }: { secretKey: string; balance: string }) => ({
-        privateKey: secretKey,
-        balance,
-      })),
+      accounts: mnemonic ? { mnemonic } : undefined,
+      //accounts: accounts.map(({ secretKey, balance }: { secretKey: string; balance: string }) => ({
+      //  privateKey: secretKey,
+      //  balance,
+      //})),
       forking: mainnetFork,
     },
   },

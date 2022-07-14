@@ -13,6 +13,8 @@ import {
   Currency__factory,
   FreeCollectModule,
   FreeCollectModule__factory,
+  FreeCollectAndTagModule,
+  FreeCollectAndTagModule__factory,
   Events,
   Events__factory,
   FeeCollectModule,
@@ -113,6 +115,7 @@ export let collectNFTImpl: CollectNFT;
 export let feeCollectModule: FeeCollectModule;
 export let timedFeeCollectModule: TimedFeeCollectModule;
 export let freeCollectModule: FreeCollectModule;
+export let freeCollectAndTagModule: FreeCollectAndTagModule;
 export let revertCollectModule: RevertCollectModule;
 export let limitedFeeCollectModule: LimitedFeeCollectModule;
 export let limitedTimedFeeCollectModule: LimitedTimedFeeCollectModule;
@@ -214,6 +217,9 @@ before(async function () {
 
   // Modules
   freeCollectModule = await new FreeCollectModule__factory(deployer).deploy(lensHub.address);
+  freeCollectAndTagModule = await new FreeCollectAndTagModule__factory(deployer).deploy(
+    lensHub.address
+  );
   revertCollectModule = await new RevertCollectModule__factory(deployer).deploy();
   feeCollectModule = await new FeeCollectModule__factory(deployer).deploy(
     lensHub.address,
