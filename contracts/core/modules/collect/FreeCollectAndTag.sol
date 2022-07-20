@@ -25,8 +25,8 @@ import 'hardhat/console.sol';
  * them available for use by any participant of the system. These composable tags, or “CTAGs”, thus
  * become data hubs connecting people, places and things across Web 3.
  *
- * This Module has provides two ways to tag a publication: When it's posted and when it's collected.
- * Details to follow...
+ * This Module has provides two ways to tag a publication: At the point of posting, via
+ * initializePublicationCollectModule() and when collecting via processCollect()
  */
 contract FreeCollectAndTagModule is FollowValidationModuleBase, ICollectModule {
     using Strings for uint256;
@@ -36,7 +36,20 @@ contract FreeCollectAndTagModule is FollowValidationModuleBase, ICollectModule {
     mapping(uint256 => mapping(uint256 => bool)) internal _followerOnlyByPublicationByProfile;
 
     /**
-     * @dev Use collect module initialization to tag a publication when it's first created.
+     * @notice This Collect modules permits tagging of a publication to Ethereum Tag Service.
+     * We use the initializePublicationCollectModule() hook to tag the publication at the point
+     * that is is posted to Lens.
+     *
+     * @param profileId The token ID of the profile of the publisher, passed by the hub.
+     * @param pubId The publication ID of the newly created publication, passed by the hub.
+     * @param data The arbitrary data parameter, decoded into:
+     *      bool followerOnly: Whether only followers should be able to collect.
+     *      address publisher: Address of the IETSTargetTagger implementation used to tag the pub.
+     *      string recordType: Arbitrary descriptor string for the tagging record. eg. "bookmark"
+     *      string array tags: tag string(s) to tag publication with; in form of hashtag, must conform
+     *                         to ETS tag string requirements.
+     *
+     * @return bytes An abi encoded bytes parameter, which is the same as the passed data parameter.
      */
     function initializePublicationCollectModule(
         uint256 profileId,
@@ -80,6 +93,8 @@ contract FreeCollectAndTagModule is FollowValidationModuleBase, ICollectModule {
         string memory _recordType,
         string[] memory _tags
     ) internal {
+        // ETS uses Blinks to identify blockchain URIs.
+        // see https://w3c-ccg.github.io/blockchain-links/
         string memory targetURI = string(
             abi.encodePacked(
                 'blink:polygon:mumbai:',

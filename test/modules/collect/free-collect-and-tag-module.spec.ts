@@ -66,7 +66,7 @@ makeSuiteCleanRoom('Free Collect & Tag via Ethereum Tag Service Module', functio
   });
 
   context('Scenarios', function () {
-    it.only('User should post with the free collect & tag module as the collect module, successfully tag new publication and ETS emits new taggingRecordId', async function () {
+    it.only('User should post with the freeCollectAndTagModule as the collect module, successfully tag new publication and ETS emits new taggingRecordId', async function () {
       expect(await mockETSTargetTagger.connect(userTwo).getTaggerName()).to.equal(
         'MockETSTargetTagger'
       );
@@ -95,8 +95,31 @@ makeSuiteCleanRoom('Free Collect & Tag via Ethereum Tag Service Module', functio
       )
         .to.emit(mockETSTargetTagger, 'TargetTagged')
         .withArgs(taggingRecordId);
+    });
 
-      // await expect(lensHub.connect(userTwo).collect(FIRST_PROFILE_ID, 1, data)).to.not.be.reverted;
+    it.only('User should post with the freeCollectAndTagModule as the collect module, but not tag the post', async function () {
+      let targetURI = 'blink:polygon:mumbai:' + lensHub.address.toString().toLowerCase() + ':1:1';
+      const targetId = await mockETSTarget.computeTargetId(targetURI);
+      const taggingRecordId = await mockETS.computeTaggingRecordId(
+        targetId,
+        'bookmark',
+        mockETSTargetTagger.address,
+        freeCollectAndTagModule.address
+      );
+
+      await expect(
+        lensHub.connect(user).post({
+          profileId: FIRST_PROFILE_ID,
+          contentURI: MOCK_URI,
+          collectModule: freeCollectAndTagModule.address,
+          collectModuleInitData: abiCoder.encode(
+            ['bool', 'address', 'string', 'string[]'],
+            [false, mockETSTargetTagger.address, '', []]
+          ),
+          referenceModule: ZERO_ADDRESS,
+          referenceModuleInitData: [],
+        })
+      ).to.not.emit(mockETSTargetTagger, 'TargetTagged');
     });
   });
 });
