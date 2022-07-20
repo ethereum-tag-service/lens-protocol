@@ -51,6 +51,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "ethereum-waffle": "3.4.0",
     "ethers": "5.5.1",
+    "ets": "git+https://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:x-oauth-basic@github.com:mpaler/ets.git#171-resurect-tagTarget",
     "hardhat": "2.7.0",
     "hardhat-contract-sizer": "2.1.1",
     "hardhat-gas-reporter": "1.0.6",
@@ -71,6 +72,7 @@
     }
   },
   "dependencies": {
+    "@ets/monorepo": "git+https://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:x-oauth-basic@github.com/mpaler/ets.git#171-resurect-tagTarget",
     "@openzeppelin/contracts": "4.5.0"
   },
   "author": "Lens",
