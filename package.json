@@ -72,6 +72,7 @@
     }
   },
   "dependencies": {
+    "@ets/monorepo": "git+https://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:x-oauth-basic@github.com/mpaler/ets.git#171-resurect-tagTarget",
     "@openzeppelin/contracts": "4.5.0"
   },
   "author": "Lens",
